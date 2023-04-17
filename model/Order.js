@@ -33,12 +33,12 @@ const orderSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: [true, "Corresponding user is required"],
-      ref: "Users",
+      ref: "User",
     },
   },
   { timestamp: true }
 );
 
-const Order = mongoose.model("Orders", orderSchema);
+const Order = mongoose.model("Order", orderSchema);
 
 module.exports = Order;

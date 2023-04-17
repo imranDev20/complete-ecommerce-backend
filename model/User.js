@@ -19,6 +19,7 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
+      trim: true,
       required: [true, "Password is required for user authentication."],
     },
     address: {
@@ -47,6 +48,6 @@ const userSchema = mongoose.Schema(
   { timestamp: true }
 );
 
-const User = mongoose.model("Users", userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;

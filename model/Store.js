@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema.Types;
 
-const toolSchema = mongoose.Schema(
+const storeSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Please provide a name for this Tool"],
+      required: [true, "Please provide a name for this Store"],
       trim: true,
       unique: [true, "Name must be unique."],
       minLength: [3, "Name must be atleast 3 characters."],
@@ -41,23 +42,16 @@ const toolSchema = mongoose.Schema(
       },
     },
 
-    // categories: [
-    //   {
-    //     name: {
-    //       type: String,
-    //       required: true,
-    //     },
-    //     _id: mongoose.Schema.Types.ObjectId,
-    //   },
-    // ],
-    // supplier: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Supplier",
-    // },
+    products: [
+      {
+        type: ObjectId,
+        ref: "Product",
+      },
+    ],
   },
   { timestamp: true }
 );
 
-const Tool = mongoose.model("Tool", toolSchema);
+const Store = mongoose.model("Store", storeSchema);
 
-module.exports = Tool;
+module.exports = Store;

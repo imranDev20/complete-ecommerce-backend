@@ -9,8 +9,10 @@ router
   .post(usersController.createUser);
 
 router
-  .route("/:id")
+  .route("/:email")
   .get(usersController.getUserDetail)
   .patch(usersController.updateAUser);
+
+router.route("/login").post(usersController.loginUser);
 
 module.exports = router;
