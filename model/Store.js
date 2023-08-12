@@ -8,6 +8,7 @@ const storeSchema = mongoose.Schema(
       required: [true, "Please provide a name for this Store"],
       trim: true,
       unique: [true, "Name must be unique."],
+      lowercase: true,
       minLength: [3, "Name must be atleast 3 characters."],
       maxLength: [100, "Name is too large."],
     },
@@ -15,30 +16,31 @@ const storeSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-
-    price: {
-      type: Number,
-      required: true,
-      min: [0, "Price can't be negative"],
-      validate: {
-        validator: (value) => {
-          const isInteger = Number.isInteger(value);
-
-          if (isInteger) {
-            return true;
-          } else {
-            return false;
-          }
-        },
-      },
-      message: "Quantity must be an integer",
+    email: {
+      type: String,
+      lowercase: true,
+      unique: true,
     },
 
-    unit: {
+    website: {
       type: String,
-      required: true,
-      enum: {
-        values: ["kg", "litre", "pcs"],
+      lowercase: true,
+      unique: [true, "Website must be unique."],
+      validate: [validator.isURL, "Please provide a valid URL"],
+    },
+
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "active",
+    },
+
+    manager: {
+      name: String,
+      phone: String,
+      id: {
+        type: ObjectId,
+        ref: "User",
       },
     },
 

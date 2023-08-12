@@ -8,6 +8,7 @@ const brandSchema = mongoose.Schema(
       type: String,
       required: [true, "Please provide a name for this Brand"],
       trim: true,
+      lowercase: true,
       unique: [true, "Name must be unique."],
       minLength: [3, "Name must be atleast 3 characters."],
       maxLength: [100, "Name is too large."],
@@ -19,7 +20,13 @@ const brandSchema = mongoose.Schema(
 
     website: {
       type: String,
+      lowercase: true,
+      unique: [true, "Website must be unique."],
       validate: [validator.isURL, "Please provide a valid URL"],
+    },
+
+    origin: {
+      type: String,
     },
 
     products: [
@@ -28,6 +35,23 @@ const brandSchema = mongoose.Schema(
         ref: "Product",
       },
     ],
+
+    store: [
+      {
+        name: String,
+        phone: String,
+        id: {
+          type: ObjectId,
+          ref: "Store",
+        },
+      },
+    ],
+
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "active",
+    },
   },
   { timestamp: true }
 );

@@ -1,32 +1,5 @@
 const mongoose = require("mongoose");
-
-const attributeSchema = mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Attribute name is important"],
-  },
-  value: {
-    type: [String],
-  },
-  unit: {
-    type: String,
-  },
-});
-
-const reviewSchema = mongoose.Schema({
-  name: {
-    type: String,
-  },
-  email: {
-    type: String,
-  },
-  body: {
-    type: String,
-  },
-  rating: {
-    type: Number,
-  },
-});
+const { ObjectId } = mongoose.Schema.Types;
 
 const productSchema = mongoose.Schema(
   {
@@ -42,80 +15,65 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    image: {
-      type: String,
+    images: {
+      type: [String],
       required: [true, "Image url is required"],
     },
-    offerPrice: {
-      type: Number,
-      required: true,
-      min: [0, "Price can't be negative"],
-      validate: {
-        validator: (value) => {
-          const isInteger = Number.isInteger(value);
 
-          if (isInteger) {
-            return true;
-          } else {
-            return false;
-          }
-        },
-      },
-      message: "Quantity must be an integer",
-    },
     regularPrice: {
       type: Number,
-      required: true,
-      min: [0, "Price can't be negative"],
-      validate: {
-        validator: (value) => {
-          const isInteger = Number.isInteger(value);
-
-          if (isInteger) {
-            return true;
-          } else {
-            return false;
-          }
-        },
-      },
-      message: "Quantity must be an integer",
+      required: [true, "Please provide a price for this product"],
     },
+
+    discountPrice: {
+      type: Number,
+      default: null,
+    },
+
     unit: {
       type: String,
       required: true,
       enum: {
-        values: ["kg", "litre", "pcs"],
+        values: ["kg", "litre", "pcs", "bag"],
+        message: "Unit value can't be {VALUE}. Must be kg/litre/pcs/bag",
       },
     },
+
     brand: {
-      type: String,
-      required: true,
+      name: {
+        type: String,
+        required: true,
+      },
+      id: {
+        type: ObjectId,
+        ref: "Brand",
+        required: true,
+      },
     },
+
     rating: {
       type: Number,
-      required: false,
+      default: 0,
     },
-    stock: {
-      type: Number,
-      required: false,
-    },
-    attributes: [attributeSchema],
-    reviews: [reviewSchema],
 
-    /* another field for region, color, size, storage, weight, capacity, flavor - save these for a specific shop  */
-
-    categories: [
+    attributes: [
       {
-        name: {
-          type: String,
-          required: true,
-        },
-        _id: mongoose.Schema.Types.ObjectId,
+        name: String,
+        value: [String],
+        unit: String,
       },
     ],
-    supplier: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Supplier",
+
+    category: {
+      name: {
+        type: String,
+        required: true,
+      },
+      id: {
+        type: ObjectId,
+        ref: "Category",
+        required: true,
+      },
     },
   },
   { timestamp: true }
