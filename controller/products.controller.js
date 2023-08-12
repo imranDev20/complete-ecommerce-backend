@@ -8,7 +8,8 @@ const mongoose = require("mongoose");
 
 module.exports.getAllProducts = async (req, res, next) => {
   try {
-    const products = await getAllProductsService();
+    const { categories } = req.query;
+    const products = await getAllProductsService(categories);
 
     if (!products) {
       return res.status(400).send({
@@ -16,6 +17,14 @@ module.exports.getAllProducts = async (req, res, next) => {
         messages: `Internal server error`,
       });
     }
+
+    if (products.length === 0) {
+      return res.status(404).send({
+        success: false,
+        messages: `Products not found`,
+      });
+    }
+
     return res.status(200).send({
       success: true,
       messages: `Products found`,

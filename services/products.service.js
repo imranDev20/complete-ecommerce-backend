@@ -1,7 +1,12 @@
 const Product = require("../model/Product");
 
-exports.getAllProductsService = async () => {
-  return await Product.find({});
+exports.getAllProductsService = async (categories) => {
+  if (categories) {
+    const categoriesToFilter = categories.toString().split(",");
+    return await Product.find({ "category.name": { $in: categoriesToFilter } });
+  }
+
+  return await Product.find();
 };
 
 exports.getProductDetailService = async (id) => {
