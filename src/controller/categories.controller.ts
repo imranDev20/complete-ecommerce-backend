@@ -1,12 +1,13 @@
-const {
+import { Request, Response } from "express";
+import mongoose from "mongoose";
+import {
   createCategoryService,
   getCategoriesService,
   getCategoryService,
   updateCategoryService,
-} = require("../services/categories.service");
-const mongoose = require("mongoose");
+} from "../services/categories.service.ts";
 
-module.exports.getCategories = async (req, res, next) => {
+export const getCategories = async (req: Request, res: Response) => {
   try {
     const categories = await getCategoriesService();
 
@@ -29,7 +30,7 @@ module.exports.getCategories = async (req, res, next) => {
   }
 };
 
-module.exports.getCategory = async (req, res, next) => {
+export const getCategory = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id))
@@ -53,7 +54,7 @@ module.exports.getCategory = async (req, res, next) => {
   }
 };
 
-module.exports.createCategory = async (req, res, next) => {
+export const createCategory = async (req: Request, res: Response) => {
   try {
     const result = await createCategoryService(req.body);
 
@@ -77,7 +78,7 @@ module.exports.createCategory = async (req, res, next) => {
   }
 };
 
-module.exports.updateCategory = async (req, res, next) => {
+export const updateCategory = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id))

@@ -1,6 +1,6 @@
-const express = require("express");
+import { Router } from "express";
 const categoriesController = require("../../controller/categories.controller");
-const router = express.Router();
+const router = Router();
 
 router
   .route("/")

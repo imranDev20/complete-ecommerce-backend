@@ -1,7 +1,7 @@
-const express = require("express");
+import { Router } from "express";
 const usersController = require("../../controller/users.controller");
-const limiter = require("../../middleware/limiter");
-const router = express.Router();
+import limiter from "../../middleware/limiter.ts";
+const router = Router();
 
 router
   .route("/")

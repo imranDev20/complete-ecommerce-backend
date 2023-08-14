@@ -1,18 +1,18 @@
 const Category = require("../model/Category");
 
-exports.getCategoriesService = async () => {
+export const getCategoriesService = async () => {
   return await Category.find({});
 };
 
-exports.getCategoryService = async (id) => {
+export const getCategoryService = async (id) => {
   const category = await Category.findOne({ _id: id });
   return category;
 };
 
-exports.createCategoryService = async (category) => {
+export const createCategoryService = async (category) => {
   return await Category.create(category);
 };
 
-exports.updateCategoryService = async (id, category) => {
+export const updateCategoryService = async (id, category) => {
   return await Category.findByIdAndUpdate(id, category);
 };

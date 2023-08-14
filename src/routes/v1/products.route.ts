@@ -1,7 +1,6 @@
-const express = require("express");
+import { Router } from "express";
 const productsController = require("../../controller/products.controller");
-const limiter = require("../../middleware/limiter");
-const router = express.Router();
+const router = Router();
 
 router
   .route("/")
@@ -13,4 +12,4 @@ router
   .get(productsController.getProductDetail)
   .patch(productsController.updateAProduct);
 
-module.exports = router;
+export default router;
