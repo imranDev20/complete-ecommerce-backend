@@ -6,7 +6,7 @@ const categoriesRoutes = require("./routes/v1/categories.route.js");
 const colors = require("colors");
 require("dotenv").config();
 
-const app = require("./app");
+const app = require("./app.js");
 
 // Database Connect
 require("./config/dbConfig");
@@ -18,9 +18,9 @@ app.use("/api/v1/products", productsRoutes);
 app.use("/api/v1/categories", categoriesRoutes);
 
 // Global Routes
-app.get("/", (req, res) => {
+app.get("/", (req: any, res: any) => {
   res.send("Hello World");
 });
-app.all("*", (req, res) => {
+app.all("*", (req: any, res: any) => {
   res.send("No Routes Found");
 });
