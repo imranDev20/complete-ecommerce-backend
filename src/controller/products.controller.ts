@@ -5,7 +5,7 @@ import {
   getAllProductsService,
   getProductDetailService,
   updateProductService,
-} from "../services/products.service.ts";
+} from "../services/products.service.js";
 
 import mongoose from "mongoose";
 

@@ -1,14 +1,17 @@
-import ordersRoutes from "./routes/v1/orders.route.ts";
-import usersRoutes from "./routes/v1/users.route.ts";
-import productsRoutes from "./routes/v1/products.route.ts";
-import categoriesRoutes from "./routes/v1/categories.route.ts";
-// import colors from "colors";
+import dotenv from "dotenv";
+import path from "path";
+
+import ordersRoutes from "./routes/v1/orders.route.js";
+import usersRoutes from "./routes/v1/users.route.js";
+import productsRoutes from "./routes/v1/products.route.js";
+import categoriesRoutes from "./routes/v1/categories.route.js";
 import app from "./app.js";
+import "./config/dbConfig.js";
 
-require("dotenv").config();
+dotenv.config({ path: "../.env" });
 
-// Database Connect
-require("./config/dbConfig");
+// console.log("ATLAS_URI:", process.env.ATLAS_URI);
+console.log("__dirname:", __dirname);
 
 // Routes
 app.use("/api/v1/orders", ordersRoutes);

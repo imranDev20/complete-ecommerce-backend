@@ -1,4 +1,4 @@
-const nodemailer = require("nodemailer");
+import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -7,7 +7,7 @@ const transporter = nodemailer.createTransport({
     pass: process.env.MAIL_PASS,
   },
 });
-function sendMail(orders) {
+function sendMail(orders: any) {
   const { address, name, email, product, price, quantity } = orders;
 
   const mailOptions = {
@@ -39,5 +39,4 @@ function sendMail(orders) {
     }
   });
 }
-
-module.exports = sendMail;
+export default sendMail;

@@ -1,5 +1,5 @@
-import { ProductType } from "../@types/product.type.ts";
-import Product from "../model/Product.ts";
+import { ProductType } from "../@types/product.type.js";
+import Product from "../model/Product.js";
 
 export const getAllProductsService = async (categories: any) => {
   if (categories) {
