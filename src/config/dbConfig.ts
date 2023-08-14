@@ -2,14 +2,20 @@ import mongoose from "mongoose";
 import "dotenv/config";
 mongoose.set("strictQuery", true);
 
-mongoose
-  .connect(
-    process.env.ATLAS_URI ||
-      "mongodb+srv://dbuser1:SQrDENOjTeB06dNy@cluster0.k8znc.mongodb.net/",
-    {
-      dbName: "ecommerce",
+async function connectToDatabase() {
+  try {
+    if (process.env.ATLAS_URI) {
+      await mongoose.connect(process.env.ATLAS_URI, {
+        dbName: "ecommerce",
+      });
+    } else {
+      throw Error();
     }
-  )
-  .then(() => {
-    console.log("Database connection successfull");
-  });
+
+    console.log("Database connection successful");
+  } catch (error) {
+    console.error("Database connection failed:", error);
+  }
+}
+
+connectToDatabase();

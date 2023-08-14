@@ -1,17 +1,18 @@
 import dotenv from "dotenv";
 import path from "path";
-
+import { fileURLToPath } from "url";
 import ordersRoutes from "./routes/v1/orders.route.js";
 import usersRoutes from "./routes/v1/users.route.js";
 import productsRoutes from "./routes/v1/products.route.js";
 import categoriesRoutes from "./routes/v1/categories.route.js";
-import app from "./app.js";
 import "./config/dbConfig.js";
+import app from "./app.js";
 
-dotenv.config({ path: "../.env" });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const __parentdir = path.join(__dirname, ".."); // Go one step back
 
-// console.log("ATLAS_URI:", process.env.ATLAS_URI);
-console.log("__dirname:", __dirname);
+dotenv.config({ path: path.join(__parentdir, ".env") });
 
 // Routes
 app.use("/api/v1/orders", ordersRoutes);
