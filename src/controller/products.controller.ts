@@ -1,12 +1,15 @@
-const {
+import { Request, Response } from "express";
+
+import {
   createProductService,
   getAllProductsService,
   getProductDetailService,
   updateProductService,
-} = require("../services/products.service");
-const mongoose = require("mongoose");
+} from "../services/products.service.ts";
 
-module.exports.getAllProducts = async (req, res, next) => {
+import mongoose from "mongoose";
+
+export const getAllProducts = async (req: Request, res: Response) => {
   try {
     const { categories } = req.query;
     const products = await getAllProductsService(categories);
@@ -33,12 +36,12 @@ module.exports.getAllProducts = async (req, res, next) => {
   } catch (error) {
     return res.status(400).send({
       success: false,
-      message: error.message,
+      message: error instanceof Error ? error.message : String(error),
     });
   }
 };
 
-module.exports.getProductDetail = async (req, res, next) => {
+export const getProductDetail = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id))
@@ -57,12 +60,12 @@ module.exports.getProductDetail = async (req, res, next) => {
   } catch (error) {
     return res.status(400).send({
       success: false,
-      message: error.message,
+      message: error instanceof Error ? error.message : String(error),
     });
   }
 };
 
-module.exports.createProduct = async (req, res, next) => {
+export const createProduct = async (req: Request, res: Response) => {
   try {
     const result = await createProductService(req.body);
 
@@ -81,12 +84,12 @@ module.exports.createProduct = async (req, res, next) => {
   } catch (error) {
     return res.status(400).send({
       success: false,
-      message: error.message,
+      message: error instanceof Error ? error.message : String(error),
     });
   }
 };
 
-module.exports.updateAProduct = async (req, res, next) => {
+export const updateAProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id))
@@ -109,7 +112,7 @@ module.exports.updateAProduct = async (req, res, next) => {
   } catch (error) {
     return res.status(400).send({
       success: false,
-      message: error.message,
+      message: error instanceof Error ? error.message : String(error),
     });
   }
 };

@@ -1,12 +1,11 @@
-const ordersRoutes = require("./routes/v1/orders.route.js");
-const usersRoutes = require("./routes/v1/users.route.js");
-const productsRoutes = require("./routes/v1/products.route.js");
-const categoriesRoutes = require("./routes/v1/categories.route.js");
+import ordersRoutes from "./routes/v1/orders.route.ts";
+import usersRoutes from "./routes/v1/users.route.ts";
+import productsRoutes from "./routes/v1/products.route.ts";
+import categoriesRoutes from "./routes/v1/categories.route.ts";
+// import colors from "colors";
+import app from "./app.js";
 
-const colors = require("colors");
 require("dotenv").config();
-
-const app = require("./app.js");
 
 // Database Connect
 require("./config/dbConfig");

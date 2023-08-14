@@ -1,13 +1,13 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const { ObjectId } = mongoose.Schema.Types;
 
-const productSchema = mongoose.Schema(
+const productSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: [true, "Please provide a name for this Product"],
       trim: true,
-      unique: [true, "Name must be unique."],
+      unique: true,
       minLength: [3, "Name must be atleast 3 characters."],
       maxLength: [100, "Name is too large."],
     },
@@ -76,9 +76,9 @@ const productSchema = mongoose.Schema(
       },
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
 const Product = mongoose.model("Product", productSchema);
 
-module.exports = Product;
+export default Product;

@@ -1,6 +1,7 @@
-const Product = require("../model/Product");
+import { ProductType } from "../@types/product.type.ts";
+import Product from "../model/Product.ts";
 
-exports.getAllProductsService = async (categories) => {
+export const getAllProductsService = async (categories: any) => {
   if (categories) {
     const categoriesToFilter = categories.toString().split(",");
     return await Product.find({ "category.name": { $in: categoriesToFilter } });
@@ -9,15 +10,18 @@ exports.getAllProductsService = async (categories) => {
   return await Product.find();
 };
 
-exports.getProductDetailService = async (id) => {
+export const getProductDetailService = async (id: string) => {
   const product = await Product.findOne({ _id: id });
   return product;
 };
 
-exports.createProductService = async (product) => {
+export const createProductService = async (product: ProductType) => {
   return await Product.create(product);
 };
 
-exports.updateProductService = async (id, product) => {
+export const updateProductService = async (
+  id: string,
+  product: ProductType
+) => {
   return await Product.findByIdAndUpdate(id, product);
 };

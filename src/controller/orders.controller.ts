@@ -1,6 +1,7 @@
-const Order = require("../model/Order");
+import { Request, Response } from "express";
+import Order from "../model/Order.ts";
 
-module.exports.getAllOrders = async (req, res, next) => {
+export const getAllOrders = async (req: Request, res: Response) => {
   try {
     // const db = getDb();
     // const orders = await db.collection("orders").find().toArray();
@@ -10,7 +11,7 @@ module.exports.getAllOrders = async (req, res, next) => {
   }
 };
 
-module.exports.getOrderDetail = async (req, res, next) => {
+export const getOrderDetail = async (req: Request, res: Response) => {
   try {
     // const db = getDb();
     // const { id } = req.params;
@@ -29,7 +30,7 @@ module.exports.getOrderDetail = async (req, res, next) => {
   }
 };
 
-module.exports.createOrder = async (req, res, next) => {
+export const createOrder = async (req: Request, res: Response) => {
   try {
     const order = req.body;
     const result = await Order.create(order);
@@ -41,12 +42,12 @@ module.exports.createOrder = async (req, res, next) => {
   } catch (error) {
     res.status(400).send({
       success: false,
-      message: error.message,
+      message: error instanceof Error ? error.message : String(error),
     });
   }
 };
 
-module.exports.updateAOrder = async (req, res, next) => {
+export const updateAOrder = async (req: Request, res: Response) => {
   try {
     // const db = getDb();
     // const { id } = req.params;

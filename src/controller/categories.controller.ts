@@ -5,9 +5,9 @@ import {
   getCategoriesService,
   getCategoryService,
   updateCategoryService,
-} from "../services/categories.service.ts";
+} from "../services/categories.service.js";
 
-export const getCategories = async (req: Request, res: Response) => {
+export const getCategories = async (_: Request, res: Response) => {
   try {
     const categories = await getCategoriesService();
 
@@ -25,7 +25,7 @@ export const getCategories = async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(400).send({
       success: false,
-      message: error.message,
+      message: error instanceof Error ? error.message : String(error),
     });
   }
 };
@@ -49,7 +49,7 @@ export const getCategory = async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(400).send({
       success: false,
-      message: error.message,
+      message: error instanceof Error ? error.message : String(error),
     });
   }
 };
@@ -73,7 +73,7 @@ export const createCategory = async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(400).send({
       success: false,
-      message: error.message,
+      message: error instanceof Error ? error.message : String(error),
     });
   }
 };
@@ -99,7 +99,7 @@ export const updateCategory = async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(400).send({
       success: false,
-      message: error.message,
+      message: error instanceof Error ? error.message : String(error),
     });
   }
 };

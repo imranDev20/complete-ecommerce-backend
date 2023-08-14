@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 mongoose.set("strictQuery", true);
 
 mongoose
-  .connect(process.env.ATLAS_URI, {
+  .connect(`${process.env.ATLAS_URI}`, {
     dbName: "ecommerce",
   })
   .then(() => {

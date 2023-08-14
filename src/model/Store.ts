@@ -1,13 +1,14 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+import validator from "validator";
 const { ObjectId } = mongoose.Schema.Types;
 
-const storeSchema = mongoose.Schema(
+const storeSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: [true, "Please provide a name for this Store"],
       trim: true,
-      unique: [true, "Name must be unique."],
+      unique: true,
       lowercase: true,
       minLength: [3, "Name must be atleast 3 characters."],
       maxLength: [100, "Name is too large."],
@@ -25,8 +26,8 @@ const storeSchema = mongoose.Schema(
     website: {
       type: String,
       lowercase: true,
-      unique: [true, "Website must be unique."],
-      validate: [validator.isURL, "Please provide a valid URL"],
+      unique: true,
+      validate: [validator.default.isURL, "Please provide a valid URL"],
     },
 
     status: {
@@ -51,9 +52,9 @@ const storeSchema = mongoose.Schema(
       },
     ],
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
 const Store = mongoose.model("Store", storeSchema);
 
-module.exports = Store;
+export default Store;

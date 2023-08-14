@@ -1,5 +1,6 @@
 import { Router } from "express";
-const categoriesController = require("../../controller/categories.controller");
+import * as categoriesController from "../../controller/categories.controller.ts";
+
 const router = Router();
 
 router
@@ -12,4 +13,4 @@ router
   .get(categoriesController.getCategory)
   .patch(categoriesController.updateCategory);
 
-module.exports = router;
+export default router;

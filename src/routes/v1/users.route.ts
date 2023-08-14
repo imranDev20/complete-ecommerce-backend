@@ -1,6 +1,6 @@
 import { Router } from "express";
-const usersController = require("../../controller/users.controller");
-import limiter from "../../middleware/limiter.ts";
+import * as usersController from "../../controller/users.controller.ts";
+
 const router = Router();
 
 router
@@ -15,4 +15,4 @@ router
 
 router.route("/login").post(usersController.loginUser);
 
-module.exports = router;
+export default router;

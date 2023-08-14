@@ -1,5 +1,6 @@
 import { Router } from "express";
-const productsController = require("../../controller/products.controller");
+import * as productsController from "../../controller/products.controller.ts";
+
 const router = Router();
 
 router
