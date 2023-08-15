@@ -1,9 +1,10 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 import validator from "validator";
+import { BrandDocument } from "../@types/brand.js";
 
-const { ObjectId } = mongoose.Schema.Types;
+const { ObjectId } = Schema.Types;
 
-const brandSchema = new mongoose.Schema(
+const brandSchema = new Schema(
   {
     name: {
       type: String,
@@ -31,6 +32,7 @@ const brandSchema = new mongoose.Schema(
 
     origin: {
       type: String,
+      required: true,
     },
 
     products: [
@@ -60,6 +62,6 @@ const brandSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Brand = mongoose.model("Brand", brandSchema);
+const Brand = model<BrandDocument>("Brand", brandSchema);
 
 export default Brand;

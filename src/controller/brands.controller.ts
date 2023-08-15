@@ -1,41 +1,36 @@
 import { Request, Response } from "express";
 
 import {
-  createProductService,
-  getAllProductsService,
-  getProductDetailService,
-  updateProductService,
-} from "../services/products.service.js";
+  createBrandService,
+  getAllBrandsService,
+  getBrandDetailService,
+  updateBrandService,
+} from "../services/brands.service.js";
 
 import mongoose from "mongoose";
 
-export const getAllProducts = async (req: Request, res: Response) => {
+export const getAllBrands = async (req: Request, res: Response) => {
   try {
-    const categories = req.query.categories as string;
-    const brands = req.query.brands as string;
+    const brands = await getAllBrandsService();
 
-    console.log(req.query);
-
-    const products = await getAllProductsService(categories, brands);
-
-    if (!products) {
+    if (!brands) {
       return res.status(400).send({
         success: false,
         messages: "Internal server error",
       });
     }
 
-    if (products.length === 0) {
+    if (brands.length === 0) {
       return res.status(404).send({
         success: false,
-        messages: "Products not found",
+        messages: "Brands not found",
       });
     }
 
     return res.status(200).send({
       success: true,
-      messages: "Products found",
-      data: products,
+      messages: "Brands found",
+      data: brands,
     });
   } catch (error) {
     return res.status(400).send({
@@ -45,22 +40,22 @@ export const getAllProducts = async (req: Request, res: Response) => {
   }
 };
 
-export const getProductDetail = async (req: Request, res: Response) => {
+export const getBrandDetail = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id))
       return res
         .status(400)
-        .send({ success: false, error: "Not a valid product id." });
+        .send({ success: false, error: "Not a valid brand id." });
 
-    const product = await getProductDetailService(id);
+    const brand = await getBrandDetailService(id);
 
-    if (!product)
+    if (!brand)
       return res.status(400).send({
         success: false,
-        error: "Couldn't find a product with this ID",
+        error: "Couldn't find a brand with this ID",
       });
-    res.status(200).send({ success: true, data: product });
+    res.status(200).send({ success: true, data: brand });
   } catch (error) {
     return res.status(400).send({
       success: false,
@@ -69,9 +64,9 @@ export const getProductDetail = async (req: Request, res: Response) => {
   }
 };
 
-export const createProduct = async (req: Request, res: Response) => {
+export const createBrand = async (req: Request, res: Response) => {
   try {
-    const result = await createProductService(req.body);
+    const result = await createBrandService(req.body);
 
     if (!result) {
       return res.status(400).send({
@@ -82,7 +77,7 @@ export const createProduct = async (req: Request, res: Response) => {
 
     return res.status(200).send({
       success: true,
-      messages: `Product added with id: ${result._id}`,
+      messages: `Brand added with id: ${result._id}`,
       data: result,
     });
   } catch (error) {
@@ -93,25 +88,25 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-export const updateAProduct = async (req: Request, res: Response) => {
+export const updateABrand = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id))
       return res
         .send(400)
-        .send({ success: false, error: "Not a valid product id" });
+        .send({ success: false, error: "Not a valid brand id" });
 
-    const product = await updateProductService(id, req.body);
+    const brand = await updateBrandService(id, req.body);
 
-    if (!product)
+    if (!brand)
       return res.status(400).send({
         success: false,
-        error: "Couldn't find a product with this ID",
+        error: "Couldn't find a brand with this ID",
       });
     res.status(200).send({
       success: true,
-      data: product,
-      message: "Successfully updated the product",
+      data: brand,
+      message: "Successfully updated the brand",
     });
   } catch (error) {
     return res.status(400).send({

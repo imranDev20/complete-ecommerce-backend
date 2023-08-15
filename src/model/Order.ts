@@ -1,26 +1,39 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
+import { OrderDocument } from "../@types/order.js";
 
-const orderSchema = new mongoose.Schema(
+const orderSchema = new Schema(
   {
-    products: [
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    items: [
       {
-        name: {
-          type: String,
+        product: {
+          type: Schema.Types.ObjectId,
+          ref: "Product",
           required: true,
         },
-        _id: mongoose.Schema.Types.ObjectId,
+        quantity: {
+          type: Number,
+          required: true,
+        },
       },
     ],
-
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      // required: [true, "Corresponding user is required"],
-      ref: "User",
+    totalAmount: {
+      type: Number,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["pending", "completed", "cancelled"],
+      default: "pending",
     },
   },
   { timestamps: true }
 );
 
-const Order = mongoose.model("Order", orderSchema);
+const Order = model<OrderDocument>("Order", orderSchema);
 
 export default Order;

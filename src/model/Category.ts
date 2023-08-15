@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { CategoryDocument } from "../@types/category.js";
 const { ObjectId } = mongoose.Schema.Types;
 
 const categorySchema = new mongoose.Schema(
@@ -27,6 +28,6 @@ const categorySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Category = mongoose.model("Category", categorySchema);
+const Category = mongoose.model<CategoryDocument>("Category", categorySchema);
 
 export default Category;

@@ -1,7 +1,8 @@
-import mongoose from "mongoose";
-const { ObjectId } = mongoose.Schema.Types;
+import { Schema, model } from "mongoose";
+import { ProductDocument } from "../@types/product.js";
+const { ObjectId } = Schema.Types;
 
-const productSchema = new mongoose.Schema(
+const productSchema = new Schema(
   {
     name: {
       type: String,
@@ -43,6 +44,7 @@ const productSchema = new mongoose.Schema(
       name: {
         type: String,
         required: true,
+        lowercase: true,
       },
       id: {
         type: ObjectId,
@@ -68,6 +70,7 @@ const productSchema = new mongoose.Schema(
       name: {
         type: String,
         required: true,
+        lowercase: true,
       },
       id: {
         type: ObjectId,
@@ -79,6 +82,6 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Product = mongoose.model("Product", productSchema);
+const Product = model<ProductDocument>("Product", productSchema);
 
 export default Product;
