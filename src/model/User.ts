@@ -32,6 +32,14 @@ const userSchema = new Schema(
       default: "Doe",
     },
 
+    birthDate: {
+      type: String,
+      validate: {
+        validator: (value: string) => validator.default.isISO8601(value), // Validate ISO 8601 date format
+        message: "Invalid birthdate format (ISO 8601)",
+      },
+    },
+
     paymentMethods: [
       {
         type: {
@@ -97,6 +105,14 @@ const userSchema = new Schema(
       {
         type: Types.ObjectId,
         ref: "SupportTicket",
+        default: [],
+      },
+    ],
+
+    orders: [
+      {
+        type: Types.ObjectId,
+        ref: "Order",
         default: [],
       },
     ],

@@ -40,6 +40,17 @@ const productSchema = new Schema(
       },
     },
 
+    stock: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["active", "in stock", "out of stock", "discontinued"],
+      required: true,
+    },
+
     brand: {
       name: {
         type: String,
@@ -81,6 +92,24 @@ const productSchema = new Schema(
   },
   { timestamps: true }
 );
+
+// Middleware to update status based on stock
+productSchema.pre("save", function (next) {
+  if (this.stock === 0) {
+    this.status = "out of stock";
+  }
+  next();
+});
+
+productSchema.pre("validate", function (next) {
+  if (this.discountPrice !== null && this.discountPrice === this.regularPrice) {
+    this.invalidate(
+      "discountPrice",
+      "Discount price cannot be equal to the regular price."
+    );
+  }
+  next();
+});
 
 const Product = model<ProductDocument>("Product", productSchema);
 

@@ -5,14 +5,12 @@ const router = Router();
 
 router
   .route("/")
-  .get(usersController.getAllUsers)
+  .get(usersController.getUsers)
   .post(usersController.createUser);
 
 router
-  .route("/:email")
-  .get(usersController.getUserDetail)
-  .patch(usersController.updateAUser);
-
-router.route("/login").post(usersController.loginUser);
+  .route("/:id")
+  .get(usersController.getUser)
+  .patch(usersController.updateUser);
 
 export default router;

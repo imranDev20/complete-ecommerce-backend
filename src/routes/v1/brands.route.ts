@@ -5,7 +5,7 @@ const router = Router();
 
 router
   .route("/")
-  .get(brandsController.getAllBrands)
+  .get(brandsController.getBrands)
   .post(brandsController.createBrand);
 
 router

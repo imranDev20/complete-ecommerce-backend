@@ -1,8 +1,8 @@
 import { BrandDocument } from "../@types/brand.js";
 import Brand from "../model/Brand.js";
 
-export const getAllBrandsService = async () => {
-  return await Brand.find();
+export const getBrandsService = async () => {
+  return await Brand.find({});
 };
 
 export const getBrandDetailService = async (id: string) => {
@@ -10,7 +10,7 @@ export const getBrandDetailService = async (id: string) => {
   return brand;
 };
 
-export const createBrandService = async (brand: BrandDocument) => {
+export const createBrandService = async (brand: any) => {
   return await Brand.create(brand);
 };
 

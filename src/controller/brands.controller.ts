@@ -2,16 +2,16 @@ import { Request, Response } from "express";
 
 import {
   createBrandService,
-  getAllBrandsService,
+  getBrandsService,
   getBrandDetailService,
   updateBrandService,
 } from "../services/brands.service.js";
 
 import mongoose from "mongoose";
 
-export const getAllBrands = async (req: Request, res: Response) => {
+export const getBrands = async (req: Request, res: Response) => {
   try {
-    const brands = await getAllBrandsService();
+    const brands = await getBrandsService();
 
     if (!brands) {
       return res.status(400).send({

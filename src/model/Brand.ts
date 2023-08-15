@@ -57,6 +57,7 @@ const brandSchema = new Schema(
       type: String,
       enum: ["active", "inactive"],
       default: "active",
+      required: true,
     },
   },
   { timestamps: true }

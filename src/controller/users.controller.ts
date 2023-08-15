@@ -1,34 +1,132 @@
 import { Request, Response } from "express";
+import { Types } from "mongoose";
+import {
+  createUserService,
+  getUserService,
+  getUsersService,
+  updateUserService,
+} from "../services/users.service.js";
 
-export const getAllUsers = async (req: Request, res: Response) => {
+export const getUsers = async (req: Request, res: Response) => {
   try {
+    const users = await getUsersService();
+
+    if (!users) {
+      return res.status(400).send({
+        success: false,
+        messages: "Internal server error",
+      });
+    }
+
+    if (users.length === 0) {
+      return res.status(404).send({
+        success: false,
+        messages: "Users not found",
+      });
+    }
+
+    return res.status(200).send({
+      success: true,
+      messages: "Users found",
+      data: users,
+    });
   } catch (error) {
-    console.log(error);
+    return res.status(400).send({
+      success: false,
+      message: error instanceof Error ? error.message : String(error),
+    });
   }
 };
 
-export const getUserDetail = async (req: Request, res: Response) => {
+export const getUser = async (req: Request, res: Response) => {
   try {
+    const { id } = req.params;
+    const populate = req.query.populate as string;
+
+    if (!Types.ObjectId.isValid(id))
+      return res
+        .status(400)
+        .send({ success: false, error: "Not a valid user id." });
+
+    const user = await getUserService(id, populate);
+
+    if (!user)
+      return res.status(400).send({
+        success: false,
+        error: "Couldn't find a user with this ID",
+      });
+
+    res.status(200).send({ success: true, data: user });
   } catch (error) {
-    console.log(error);
+    return res.status(400).send({
+      success: false,
+      message: error instanceof Error ? error.message : String(error),
+    });
   }
 };
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-  } catch (error) {}
-};
+    const user = req.body;
 
-export const updateAUser = async (req: Request, res: Response) => {
-  try {
+    if (!user) {
+      return res.status(400).send({
+        success: false,
+        messages:
+          "User data is missing. Please provide valid user information.",
+      });
+    }
+
+    const result = await createUserService(user);
+
+    if (!result) {
+      return res.status(400).send({
+        success: false,
+        messages: "Internal server error",
+      });
+    }
+
+    return res.status(200).send({
+      success: true,
+      messages: `User added with id: ${result._id}`,
+      data: result,
+    });
   } catch (error) {
-    console.log(error);
+    return res.status(400).send({
+      success: false,
+      message: error instanceof Error ? error.message : String(error),
+    });
   }
 };
 
-export const loginUser = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
+export const updateUser = async (req: Request, res: Response) => {
   try {
-  } catch (error) {}
+    const user = req.body;
+    const id = req.params.id as string;
+
+    if (!user || !id) {
+      return res.status(400).send({
+        success: false,
+        messages:
+          "User data or user ID is missing. Please provide valid user information.",
+      });
+    }
+
+    const result = await updateUserService(id, user);
+
+    if (!result) {
+      return res.status(400).send({
+        success: false,
+        messages: "Internal server error",
+      });
+    }
+
+    return res.status(200).send({
+      success: true,
+      messages: `User updated with id: ${result._id}`,
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };

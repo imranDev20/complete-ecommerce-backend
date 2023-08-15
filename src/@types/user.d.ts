@@ -14,6 +14,7 @@ type Address = {
 };
 
 type SupportTicket = Types.Array<Types.ObjectId>;
+type Orders = Types.Array<Types.ObjectId>;
 
 export type UserDocument = Document & {
   email: string;
@@ -24,4 +25,5 @@ export type UserDocument = Document & {
   wishlist?: Types.Array<Types.ObjectId>;
   addresses: Types.Array<Address>;
   supportTicket: SupportTicket;
+  orders: Orders;
 };

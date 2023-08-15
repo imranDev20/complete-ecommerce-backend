@@ -11,6 +11,8 @@ export type ProductDocument = Document & {
   regularPrice: number;
   discountPrice: number | null;
   unit: "kg" | "litre" | "pcs" | "bag";
+  stock: number;
+  status: "active" | "in stock" | "out of stock" | "discontinued";
   brand: {
     name: string;
     id: Types.ObjectId;
@@ -21,6 +23,4 @@ export type ProductDocument = Document & {
     name: string;
     id: Types.ObjectId;
   };
-  createdAt: Date;
-  updatedAt: Date;
 };
