@@ -28,6 +28,11 @@ const productSchema = new Schema(
 
     discountPrice: {
       type: Number,
+      default: 0,
+    },
+
+    discountPercentage: {
+      type: Number,
       default: null,
     },
 
@@ -98,6 +103,15 @@ productSchema.pre("save", function (next) {
   if (this.stock === 0) {
     this.status = "out of stock";
   }
+
+  if (!this.discountPrice || !this.regularPrice) {
+    this.discountPercentage = 0;
+    return next();
+  }
+
+  const discountPercentage =
+    ((this.regularPrice - this.discountPrice) / this.regularPrice) * 100;
+  this.discountPercentage = Math.round(discountPercentage);
   next();
 });
 

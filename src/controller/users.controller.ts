@@ -41,14 +41,16 @@ export const getUsers = async (req: Request, res: Response) => {
 export const getUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const populate = req.query.populate as string;
+    const aggregate = req.query.aggregate as string;
 
     if (!Types.ObjectId.isValid(id))
       return res
         .status(400)
         .send({ success: false, error: "Not a valid user id." });
 
-    const user = await getUserService(id, populate);
+    const user = await getUserService(id, aggregate);
+
+    console.log(user);
 
     if (!user)
       return res.status(400).send({

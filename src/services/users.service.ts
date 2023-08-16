@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { UserDocument } from "../@types/user.js";
 import User from "../model/User.js";
 
@@ -6,7 +7,41 @@ export const getUsersService = async () => {
 };
 
 export const getUserService = async (id: string, populate: string) => {
-  return await User.findOne({ _id: id }).populate(populate);
+  if (populate) {
+    const wishlistAggregate = await User.aggregate([
+      {
+        $match: { _id: new ObjectId(id) },
+      },
+      {
+        $lookup: {
+          from: "products", // Collection name for products
+          localField: "wishlist",
+          foreignField: "_id",
+          as: "wishlistProducts",
+        },
+      },
+      {
+        $project: {
+          email: 1,
+          firstName: 1,
+          lastName: 1,
+          wishlistProducts: {
+            _id: 1,
+            name: 1,
+            images: 1,
+            regularPrice: 1,
+            discountPrice: 1,
+            discountPercentage: 1,
+            rating: 1,
+            // Include other product fields you need
+          },
+        },
+      },
+    ]);
+    return wishlistAggregate[0];
+  }
+
+  return await User.findOne({ _id: id });
 };
 
 export const createUserService = async (user: UserDocument) => {
