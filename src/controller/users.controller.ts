@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { Types } from "mongoose";
 import {
   createUserService,
   getUserService,
@@ -40,22 +39,22 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const getUser = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { email } = req.params;
+
+    console.log(req.params);
     const aggregate = req.query.aggregate as string;
 
-    if (!Types.ObjectId.isValid(id))
+    if (!email || email === "")
       return res
         .status(400)
-        .send({ success: false, error: "Not a valid user id." });
+        .send({ success: false, error: "You need to provide an email" });
 
-    const user = await getUserService(id, aggregate);
-
-    console.log(user);
+    const user = await getUserService(email, aggregate);
 
     if (!user)
       return res.status(400).send({
         success: false,
-        error: "Couldn't find a user with this ID",
+        error: "Couldn't find a user with this Email",
       });
 
     res.status(200).send({ success: true, data: user });

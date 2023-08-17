@@ -9,7 +9,7 @@ router
   .post(usersController.createUser);
 
 router
-  .route("/:id")
+  .route("/:email")
   .get(usersController.getUser)
   .patch(usersController.updateUser);
 

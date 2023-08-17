@@ -1,4 +1,3 @@
-import { ObjectId } from "mongodb";
 import { UserDocument } from "../@types/user.js";
 import User from "../model/User.js";
 
@@ -6,11 +5,11 @@ export const getUsersService = async () => {
   return await User.find({});
 };
 
-export const getUserService = async (id: string, populate: string) => {
-  if (populate) {
+export const getUserService = async (email: string, aggregate: string) => {
+  if (aggregate) {
     const wishlistAggregate = await User.aggregate([
       {
-        $match: { _id: new ObjectId(id) },
+        $match: { email: email },
       },
       {
         $lookup: {
@@ -41,7 +40,7 @@ export const getUserService = async (id: string, populate: string) => {
     return wishlistAggregate[0];
   }
 
-  return await User.findOne({ _id: id });
+  return await User.findOne({ email: email });
 };
 
 export const createUserService = async (user: UserDocument) => {
