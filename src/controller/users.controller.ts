@@ -5,6 +5,8 @@ import {
   getUsersService,
   updateUserService,
 } from "../services/users.service.js";
+import generateToken from "../utils/token.js";
+import { CustomRequest } from "../@types/user.js";
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
@@ -40,8 +42,6 @@ export const getUsers = async (req: Request, res: Response) => {
 export const getUser = async (req: Request, res: Response) => {
   try {
     const { email } = req.params;
-
-    console.log(req.params);
     const aggregate = req.query.aggregate as string;
 
     if (!email || email === "")
@@ -74,7 +74,7 @@ export const createUser = async (req: Request, res: Response) => {
       return res.status(400).send({
         success: false,
         messages:
-          "User data is missing. Please provide valid user information.",
+          "User data is missing. Please provide required user information.",
       });
     }
 
@@ -87,9 +87,17 @@ export const createUser = async (req: Request, res: Response) => {
       });
     }
 
+    const payload = {
+      email: result?.email as string,
+      _id: result?._id as string,
+    };
+
+    const accessToken = generateToken(payload);
+
     return res.status(200).send({
       success: true,
       messages: `User added with id: ${result._id}`,
+      accessToken: accessToken,
       data: result,
     });
   } catch (error) {
@@ -103,17 +111,19 @@ export const createUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const user = req.body;
-    const id = req.params.id as string;
+    const email = req.params.email as string;
 
-    if (!user || !id) {
+    console.log(user, email);
+
+    if (!user || !email || email === "") {
       return res.status(400).send({
         success: false,
         messages:
-          "User data or user ID is missing. Please provide valid user information.",
+          "User data or user email is missing. Please provide required user information.",
       });
     }
 
-    const result = await updateUserService(id, user);
+    const result = await updateUserService(email, user);
 
     if (!result) {
       return res.status(400).send({
@@ -128,6 +138,66 @@ export const updateUser = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    return res.status(400).send({
+      success: false,
+      message: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
+
+export const loginUser = async (req: Request, res: Response) => {
+  try {
+    const email = req.params.email as string;
+
+    if (!email || email === "") {
+      return res.status(400).send({
+        success: false,
+        messages:
+          "User email is missing. Please provide required user information.",
+      });
+    }
+
+    const user = await getUserService(email);
+
+    if (!user)
+      return res.status(400).send({
+        success: false,
+        error: "Couldn't find a user with this Email",
+      });
+
+    const payload = {
+      email: user?.email as string,
+      _id: user?._id as string,
+    };
+
+    const accessToken = generateToken(payload);
+    res
+      .status(200)
+      .send({ success: true, data: user, accessToken: accessToken });
+  } catch (error) {
+    return res.status(400).send({
+      success: false,
+      message: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
+
+export const getMe = async (req: Request, res: Response) => {
+  try {
+    const decodedUser = (<CustomRequest>req)["user"];
+    const user = await getUserService(decodedUser.email);
+
+    if (!user) {
+      return res
+        .status(401)
+        .send({ message: "User not found or invalid credentials" });
+    }
+
+    res.status(200).send({ success: true, data: user });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      messages: "Internal server error",
+    });
   }
 };

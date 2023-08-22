@@ -5,7 +5,7 @@ export const getUsersService = async () => {
   return await User.find({});
 };
 
-export const getUserService = async (email: string, aggregate: string) => {
+export const getUserService = async (email: string, aggregate?: string) => {
   if (aggregate) {
     const wishlistAggregate = await User.aggregate([
       {
@@ -47,6 +47,9 @@ export const createUserService = async (user: UserDocument) => {
   return await User.create(user);
 };
 
-export const updateUserService = async (id: string, user: UserDocument) => {
-  return await User.findByIdAndUpdate({ _id: id }, user, { new: true });
+export const updateUserService = async (email: string, user: UserDocument) => {
+  return await User.findOneAndUpdate({ email: email }, user, {
+    new: true,
+    upsert: false,
+  });
 };

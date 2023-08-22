@@ -1,3 +1,6 @@
+import { Request } from "express";
+import { Document } from "mongodb";
+
 type PaymentMethod = {
   type: string;
   cardNumber: string;
@@ -26,4 +29,15 @@ export type UserDocument = Document & {
   addresses: Types.Array<Address>;
   supportTicket: SupportTicket;
   orders: Orders;
+};
+
+export type DecodedPayload = {
+  email: string;
+  _id: string;
+  iat: number;
+  exp: number;
+};
+
+export type CustomRequest = Request & {
+  user: DecodedPayload;
 };
