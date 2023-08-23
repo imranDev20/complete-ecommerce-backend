@@ -22,8 +22,6 @@ export const getAllProductsService = async (
       ...brandFilter,
     };
 
-    console.log(query);
-
     return await Product.find(query);
   }
 

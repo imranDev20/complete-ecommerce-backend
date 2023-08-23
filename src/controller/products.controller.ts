@@ -14,8 +14,6 @@ export const getAllProducts = async (req: Request, res: Response) => {
     const categories = req.query.categories as string;
     const brands = req.query.brands as string;
 
-    console.log(req.query);
-
     const products = await getAllProductsService(categories, brands);
 
     if (!products) {
