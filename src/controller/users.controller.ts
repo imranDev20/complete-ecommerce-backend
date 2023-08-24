@@ -15,20 +15,20 @@ export const getUsers = async (req: Request, res: Response) => {
     if (!users) {
       return res.status(400).send({
         success: false,
-        messages: "Internal server error",
+        message: "Internal server error",
       });
     }
 
     if (users.length === 0) {
       return res.status(404).send({
         success: false,
-        messages: "Users not found",
+        message: "Users not found",
       });
     }
 
     return res.status(200).send({
       success: true,
-      messages: "Users found",
+      message: "Users found",
       data: users,
     });
   } catch (error) {
@@ -47,14 +47,14 @@ export const getUser = async (req: Request, res: Response) => {
     if (!email || email === "")
       return res
         .status(400)
-        .send({ success: false, error: "You need to provide an email" });
+        .send({ success: false, message: "You need to provide an email" });
 
     const user = await getUserService(email, aggregate);
 
     if (!user)
       return res.status(400).send({
         success: false,
-        error: "Couldn't find a user with this Email",
+        message: "Couldn't find a user with this Email",
       });
 
     res.status(200).send({ success: true, data: user });
@@ -73,7 +73,7 @@ export const createUser = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(400).send({
         success: false,
-        messages:
+        message:
           "User data is missing. Please provide required user information.",
       });
     }
@@ -83,7 +83,7 @@ export const createUser = async (req: Request, res: Response) => {
     if (!result) {
       return res.status(400).send({
         success: false,
-        messages: "Internal server error",
+        message: "Internal server error",
       });
     }
 
@@ -96,15 +96,22 @@ export const createUser = async (req: Request, res: Response) => {
 
     return res.status(200).send({
       success: true,
-      messages: `User added with id: ${result._id}`,
+      message: `User added with id: ${result._id}`,
       accessToken: accessToken,
       data: result,
     });
-  } catch (error) {
-    return res.status(400).send({
-      success: false,
-      message: error instanceof Error ? error.message : String(error),
-    });
+  } catch (error: any) {
+    if (error.code === 11000 && error.keyPattern?.email) {
+      return res.status(400).send({
+        success: false,
+        message: `The email ${error.keyValue.email} is already in use.`,
+      });
+    } else {
+      return res.status(500).send({
+        success: false,
+        message: error instanceof Error ? error.message : String(error),
+      });
+    }
   }
 };
 
@@ -116,7 +123,7 @@ export const updateUser = async (req: Request, res: Response) => {
     if (!user || !email || email === "") {
       return res.status(400).send({
         success: false,
-        messages:
+        message:
           "User data or user email is missing. Please provide required user information.",
       });
     }
@@ -126,13 +133,13 @@ export const updateUser = async (req: Request, res: Response) => {
     if (!result) {
       return res.status(400).send({
         success: false,
-        messages: "Internal server error",
+        message: "Internal server error",
       });
     }
 
     return res.status(200).send({
       success: true,
-      messages: `User updated with id: ${result._id}`,
+      message: `User updated with id: ${result._id}`,
       data: result,
     });
   } catch (error) {
@@ -160,7 +167,7 @@ export const getMe = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).send({
       success: false,
-      messages: "Internal server error",
+      message: "Internal server error",
     });
   }
 };
@@ -172,7 +179,7 @@ export const loginUser = async (req: Request, res: Response) => {
     if (!email || email === "") {
       return res.status(400).send({
         success: false,
-        messages:
+        message:
           "User email is missing. Please provide required user information.",
       });
     }
@@ -182,7 +189,7 @@ export const loginUser = async (req: Request, res: Response) => {
     if (!user)
       return res.status(400).send({
         success: false,
-        error: "Couldn't find a user with this Email",
+        message: "Couldn't find a user with this Email",
       });
 
     const payload = {

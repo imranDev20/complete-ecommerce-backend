@@ -3,8 +3,18 @@ import validator from "validator";
 import cardValidator from "card-validator";
 import { UserDocument } from "../@types/user.js";
 
-const userSchema = new Schema(
+const userSchema = new Schema<UserDocument>(
   {
+    firstName: {
+      type: String,
+      default: "John",
+      required: true,
+    },
+    lastName: {
+      type: String,
+      default: "Doe",
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -16,20 +26,11 @@ const userSchema = new Schema(
     },
     phone: {
       type: String,
-      required: true,
       validate: {
         validator: (value: string) =>
           validator.default.isMobilePhone(value, "any"),
         message: "Invalid phone number",
       },
-    },
-    firstName: {
-      type: String,
-      default: "John",
-    },
-    lastName: {
-      type: String,
-      default: "Doe",
     },
 
     birthDate: {
