@@ -39,6 +39,7 @@ const productSchema = new Schema(
     unit: {
       type: String,
       required: true,
+      default: null,
       enum: {
         values: ["kg", "litre", "pcs", "bag"],
         message: "Unit value can't be {VALUE}. Must be kg/litre/pcs/bag",
@@ -52,7 +53,7 @@ const productSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["active", "in stock", "out of stock", "discontinued"],
+      enum: ["in stock", "out of stock", "discontinued"],
       required: true,
     },
 
@@ -77,7 +78,7 @@ const productSchema = new Schema(
     attributes: [
       {
         name: String,
-        value: [String],
+        values: [String],
         unit: String,
       },
     ],

@@ -6,6 +6,8 @@ export const getUsersService = async () => {
 };
 
 export const getUserService = async (email: string, aggregate?: string) => {
+  console.log(aggregate);
+
   if (aggregate) {
     const wishlistAggregate = await User.aggregate([
       {
@@ -32,7 +34,7 @@ export const getUserService = async (email: string, aggregate?: string) => {
             discountPrice: 1,
             discountPercentage: 1,
             rating: 1,
-            // Include other product fields you need
+            stock: 1,
           },
         },
       },
